@@ -1,0 +1,22 @@
+---
+- name: Simple Handlers Playbook
+  hosts: your_target_servers
+  become: yes  # Run tasks with elevated privileges (sudo)
+
+  tasks:
+    - name: Ensure a file is present
+      copy:
+        content: "This is a sample file."
+        dest: /path/on/remote/server/sample_file.txt
+        owner: your_remote_user
+        group: your_remote_group
+        mode: 0644  # Adjust permissions as needed
+      notify: 
+        - Restart Service  # Notify the handler
+
+  handlers:
+    - name: Restart Service
+      service:
+        name: your_service_name
+        state: restarted
+
